@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="RecommendationAPI:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/RecommendationAPI_war</output-path>
+    <root id="archive" name="RecommendationAPI_war.war">
+      <element id="artifact" artifact-name="RecommendationAPI:war exploded" />
+    </root>
+  </artifact>
+</component>

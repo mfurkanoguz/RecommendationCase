@@ -1,0 +1,46 @@
+Kullanılan Java versiyonu : 1.8.0_291
+MongoDB Docker Komut : docker run -d -p 27017:27017 --name dbmongo -d mongo:latest 
+
+Klasör yapısı :
+		Apps	    		: Uygulamalara ait jar ve war dosyaları bulunur
+		ETLProcessApp 	: PostgreSQL ve MongoDB arasındaki ETL işlerini yapan uygulamanın kaynak kodu
+		RecommendationAPI : Uygulamanın Rest API kaynak kodları
+		StreamReaderApp	: Apache Flink ile yapılmış Kafka -> Map -> Sink şeklinde pipeline içeren anlık uygulamanın kaynak kodu
+		StreamReaderAppWithoutFlink : Kafkadan gelen verileri MongoDB üzerine aktaran uygulamanın kaynak kodu
+		ViewProducerApp 	: Json dosyasındaki verileri kafkaya aktaran uygulamanın kaynak kodu
+		DocumentsAndScripts: Projenin dökümanları ve scriptler
+
+
+Kullanım : 
+   Apps klasöründeki jarları çalıştırmak için : 
+	ViewProducerApp :
+		java -jar ViewProducerApp.jar <json dosyasının yolu> <topic ismi>
+		Örnek :  java -jar ViewProducerApp.jar C:\Users\product-views.json mytopic
+	ETLProcessApp :
+		java -jar ETLProcessApp.jar <script dosyasının yolu> <script ismi[All,Product,categoryBased]>
+		Örnek :  java -jar ETLProcessApp.jar C:\Users\abc.sql All
+	 StreamReaderAppWithoutFlink:
+		java -jar StreamReaderAppWithoutFlink.jar <topic ismi>
+		Örnek :  java -jar StreamReaderAppWithoutFlink.jar mytopic
+	 
+	Not : RecommendationAPI_war.war dosyasını çalıştırmak için sunucu gereklidir.
+	         StreamReaderApp.jar dosyasını çalıştırmak için Apache Flink kurulu olmalıdır.
+
+
+GET ve DEL isteklerini gönderim şekilleri : 
+	GET localhost:8080/history?userid=<kullanıcı id>
+	(Örnek : GET localhost:8080/history?userid=user-74 )
+	DEL localhost:8080/history?userid=<kullanıcı id>&productid=<ürün id>
+	(Örnek : DEL localhost:8080/history?userid=user-74&productid=product-74)
+	GET localhost:8080/bestseller?userid=<kullanıcı id>
+	(Örnek : GET localhost:8080/bestseller?userid=user-74)
+
+PostgreSQL Host:localhost Port:5432 
+    • Username: postgres
+    • Password: 123456
+
+MongoDB Host:localhost Port:27017 
+    • Username: 
+    • Password: 
+
+Apache Flink docker-compose dosyası : StreamReaderApp klasörü
